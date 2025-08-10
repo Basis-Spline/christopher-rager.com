@@ -1,263 +1,235 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Christopher Rager — Lab</title>
+  <meta name="description" content="Projects, notes, and lab logs by Christopher Rager." />
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="shortcut icon" href="/favicon.ico">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Christopher Rager — Engineering & Research Portfolio</title>
-  <meta name="description" content="Engineering and research portfolio of Christopher Rager: electrical engineering projects, UAV/satellite work, notes, and contact." />
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:title" content="Christopher Rager — Engineering & Research Portfolio" />
-  <meta property="og:description" content="Electrical engineering projects, research notes, and contact." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://christopher-rager.com" />
-  <meta property="og:image" content="/og-image.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Favicon (replace /favicon.svg with your own) -->
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="alternate icon" href="/favicon.ico" />
-
-  <!-- Fonts: system serif/mono to keep it light and retro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      /* Financial Times paper pink and Pickett Eye Saver Yellow */
-      --ft-pink: #f6e1d3;
-      --ft-pink-2: #efd9ca; /* slightly darker for headers */
-      --pickett-yellow: #fff44f;
-      --ink: #2b2b2b;
-      --navy: #003366;
-      --link-hover: #0000cc;
-      --card: #fff7f0;
-      --muted: #5b5b5b;
-      --border: #d7c7b8;
-      --maxw: 960px;
+    :root{
+      --ft-paper:#fff1e5; /* Financial Times paper */
+      --eyesaver:#fff38a; /* eye saver yellow */
+      --accent:#246b5f;   /* deep green */
+      --ink:#0b0b0c;      /* near-black text */
+      --muted:#4e4e56;
+      --card:#ffffff;
+      --rule:rgba(0,0,0,.08);
+      --shadow:0 8px 24px rgba(0,0,0,.06);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--ft-paper);color:var(--ink);
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    a.underline{text-decoration:underline}
+    img{max-width:100%;display:block}
+    code,kbd,pre{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+
+    /* ===== Header / Top Nav (replaces left sidebar) ===== */
+    header{position:sticky;top:0;z-index:50;background:rgba(255,241,229,.85);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--rule)}
+    .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .dot{width:22px;height:22px;border-radius:10px;background:var(--accent)}
+    .brand h1{font-size:18px;margin:0}
+    .tagline{display:none;color:var(--muted)}
+
+    nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+    .nav a{padding:8px 10px;border-radius:10px}
+    .nav a:hover,.nav a.active{background:var(--eyesaver)}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--rule);background:#fff;box-shadow:var(--shadow)}
+    .btn.primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(36,107,95,.25)}
+
+    /* Mobile menu */
+    .burger{display:none;flex-direction:column;gap:4px;border:0;background:transparent;padding:6px}
+    .burger span{width:22px;height:2px;background:#333}
+    @media (max-width:900px){
+      nav{display:none}
+      nav.open{display:flex;position:absolute;left:0;right:0;top:54px;background:var(--ft-paper);padding:10px 16px;border-bottom:1px solid var(--rule)}
+      .burger{display:flex;margin-left:auto}
+      .tagline{display:none}
     }
 
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background: var(--ft-pink);
-      color: var(--ink);
-      font-family: Georgia, "Times New Roman", Times, serif;
-      line-height: 1.6;
-      font-size: 18px;
-    }
+    /* ===== Layout ===== */
+    .wrap{max-width:1200px;margin:0 auto;padding:20px;}
+    section{padding:18px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);margin-bottom:18px}
+    section.accent{background:var(--eyesaver)}
+    h2{margin:0 0 6px;font-size:20px}
+    .sub{color:var(--muted);font-size:14px;margin-bottom:10px}
+    hr{border:none;border-top:1px solid var(--rule);margin:16px 0}
 
-    a { color: var(--navy); text-underline-offset: 2px; }
-    a:hover { color: var(--link-hover); }
+    /* Grids & lists */
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (min-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .list{display:grid;gap:10px}
+    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:#fff}
+    .item h3{margin:0 0 4px;font-size:18px}
+    .meta{font-size:12px;color:var(--muted)}
 
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+    /* Footer */
+    footer{max-width:1200px;margin:24px auto;padding:0 24px 32px;color:var(--muted);font-size:14px}
 
-    header {
-      background: var(--ft-pink-2);
-      border-bottom: 1px solid var(--border);
-    }
-    .brand {
-      display: flex; align-items: baseline; gap: 12px;
-      padding-top: 8px; padding-bottom: 8px;
-    }
-    .brand h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; }
-    .brand .tag { color: var(--muted); font-size: 16px; }
-
-    nav { margin-top: 8px; }
-    nav ul { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; margin: 0; padding: 0; }
-    nav a { text-decoration: underline; }
-
-    .grid {
-      display: grid; gap: 20px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 900px) {
-      .grid { grid-template-columns: 2fr 1fr; }
-    }
-
-    .section { margin-top: 28px; }
-    .section h2 { margin: 0 0 10px; font-size: 24px; }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-    }
-
-    .projects { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 700px) { .projects { grid-template-columns: 1fr 1fr; } }
-
-    .proj h3 { margin: 0 0 6px; font-size: 20px; }
-    .meta { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
-    .tags { font-size: 13px; color: var(--muted); }
-    .tags code { background: var(--pickett-yellow); color: #000; padding: 2px 6px; border-radius: 6px; }
-
-    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    pre {
-      background: #fffbe0; /* softer yellow block for code */
-      border: 1px solid var(--border);
-      padding: 12px; border-radius: 6px; overflow-x: auto;
-    }
-
-    .sidebar .card { position: sticky; top: 16px; }
-
-    .yellow-banner {
-      background: var(--pickett-yellow);
-      color: #000;
-      border: 1px solid #e2d600;
-      padding: 10px 14px; border-radius: 8px; font-weight: 600;
-    }
-
-    footer { margin-top: 40px; border-top: 1px solid var(--border); background: var(--ft-pink-2); }
-    footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; }
-    .small { font-size: 14px; color: var(--muted); }
-
-    .btn { display: inline-block; padding: 8px 12px; border: 1px solid var(--ink); border-radius: 8px; text-decoration: none; }
-    .btn:hover { background: #000; color: #fff; }
+    /* Skip link */
+    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip:focus{left:8px;top:8px;width:auto;height:auto;padding:8px 10px;background:#fff;border-radius:8px;box-shadow:var(--shadow)}
   </style>
-
-  <!-- Structured data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Christopher Rager",
-    "url": "https://christopher-rager.com",
-    "jobTitle": "Electrical Engineering Student / Researcher",
-    "sameAs": [
-      "https://github.com/YOUR_GITHUB",
-      "https://www.linkedin.com/in/YOUR_LINKEDIN"
-    ]
-  }
-  </script>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   <header>
-    <div class="wrap">
+    <div class="bar">
       <div class="brand">
-        <h1>Christopher Rager</h1>
-        <span class="tag">Electrical Engineering • UAVs • Satellites • Software</span>
+        <div class="dot" aria-hidden="true"></div>
+        <div>
+          <h1>Christopher Rager</h1>
+          <div class="tagline">Embedded / RF / UAV — projects & notes</div>
+        </div>
       </div>
-      <nav aria-label="Primary">
-        <ul>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#research">Research Notes</a></li>
-          <li><a href="#writing">Writing</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a class="btn" href="/Christopher_Rager_Resume.pdf">Resume (PDF)</a></li>
-        </ul>
+      <button class="burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="topnav"><span></span><span></span><span></span></button>
+      <nav id="topnav" class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#lab">Lab Notes</a>
+        <a href="#writing">Writing</a>
+        <a href="#contact">Contact</a>
+        <a class="btn primary" href="https://github.com/basis-spline" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap grid">
-    <section class="section">
-      <div class="yellow-banner">Currently: building a GNC board concept, RF experiments, and satellite comms tooling.</div>
-
-      <div id="projects" class="section">
-        <h2>Selected Projects</h2>
-        <div class="projects">
-          <article class="card proj">
-            <h3>UAV Guidance/Navigation/Control (GNC) Board</h3>
-            <div class="meta">2025 · KiCad • STM32 • Sensor fusion</div>
-            <p>Custom PCB concept integrating IMU, baro, GNSS, and motor control with a lightweight EKF. Includes simulation notes and firmware scaffolding.</p>
-            <p class="tags">Tags: <code>embedded</code> <code>controls</code> <code>pcb</code></p>
-            <p><a href="#" aria-label="Repo link">Code/Repo</a> · <a href="#" aria-label="Design notes">Design Notes</a></p>
-          </article>
-
-          <article class="card proj">
-            <h3>Satellite Telemetry Ground Station</h3>
-            <div class="meta">2024 · GNU Radio • SDR • Antennas</div>
-            <p>Minimal-cost ground station using SDR and Python decoding pipelines. Includes recordings, demodulation flowgraphs, and decoding utilities.</p>
-            <p class="tags">Tags: <code>rf</code> <code>signal-processing</code> <code>python</code></p>
-            <p><a href="#">Docs</a> · <a href="#">Repository</a></p>
-          </article>
-
-          <article class="card proj">
-            <h3>Traffic Signal Optimization</h3>
-            <div class="meta">2023 · Evolutionary algorithms • Simulation</div>
-            <p>Modeled a five‑intersection corridor and evolved signal timings, reducing peak travel times by ~20% in deployment.</p>
-            <p class="tags">Tags: <code>optimization</code> <code>simulation</code> <code>python</code></p>
-            <p><a href="#">Write‑up</a></p>
-          </article>
-
-          <article class="card proj">
-            <h3>Chess Engine with Pygame UI</h3>
-            <div class="meta">2025 · Minimax • Pygame</div>
-            <p>Lightweight engine with opening book, en passant, dynamic depth by phase, and improved evaluation (PSTs, king safety, center control).</p>
-            <p class="tags">Tags: <code>ai</code> <code>python</code></p>
-            <p><a href="#">Repo</a></p>
-          </article>
-        </div>
-      </div>
-
-      <div id="research" class="section">
-        <h2>Research Notes</h2>
-        <article class="card">
-          <h3>Gravity Gradiometry — Practical Limits</h3>
-          <div class="meta">Notebook · last updated 2025</div>
-          <p>Survey of airborne gravity‑gradient sensing for underground structure detection. Notes on SNR, platform motion, and filtering.</p>
-          <a href="#">PDF</a>
-        </article>
-        <article class="card">
-          <h3>RF Front‑Ends for Small Ground Stations</h3>
-          <div class="meta">Notebook</div>
-          <p>LO stability, front‑end gain planning, and filtering choices for low‑budget VHF/UHF downlinks.</p>
-          <a href="#">Article</a>
-        </article>
-      </div>
-
-      <div id="writing" class="section">
-        <h2>Writing</h2>
-        <article class="card">
-          <h3>Well‑being Metrics in System Design</h3>
-          <p>Thinking through how bottom‑tier well‑being can serve as a leading indicator for resilient systems.</p>
-          <a href="#">Read</a>
-        </article>
-      </div>
-
-      <div class="section">
-        <h2>Sample Code Block</h2>
-        <pre><code>// C++‑style branding for fun
-int main() {
-  // christopher_rager();
-  return 0;
-}
-</code></pre>
-      </div>
+  <main id="main" class="wrap">
+    <section class="accent" id="about">
+      <h2>About</h2>
+      <div class="sub">Short and to the point</div>
+      <p>I build embedded systems and RF/DSP prototypes. I like clean hardware, traceable software, and results that hold up outside of a demo. This site collects my work and notes in a layout that’s easy to scan.</p>
     </section>
 
-    <aside class="sidebar section">
-      <div class="card">
-        <h2>About</h2>
-        <p>I’m Christopher Rager. I study electrical engineering and build things at the intersection of RF, controls, and software. This site collects my projects and notes.</p>
-        <p><strong>Location:</strong> Grand Forks, ND</p>
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="sub">Selected builds with links</div>
+      <div class="grid" id="project-grid" aria-live="polite"></div>
+    </section>
 
-        <h3>Links</h3>
-        <ul>
-          <li><a href="mailto:you@christopher-rager.com">you@christopher-rager.com</a></li>
-          <li><a href="https://github.com/YOUR_GITHUB">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/YOUR_LINKEDIN">LinkedIn</a></li>
-        </ul>
+    <section id="lab">
+      <h2>Lab Notes</h2>
+      <div class="sub">Build logs, experiments, fixes</div>
+      <div class="list" id="lab-list" aria-live="polite"></div>
+    </section>
 
-        <h3>Site Notes</h3>
-        <p>Theme uses Financial Times pink with Pickett Eye Saver Yellow accents for a retro technical feel.</p>
-      </div>
-    </aside>
+    <section id="writing">
+      <h2>Writing</h2>
+      <div class="sub">Longer posts and references</div>
+      <div class="list" id="post-list" aria-live="polite"></div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="sub">Best place to reach me</div>
+      <p><a class="underline" href="https://github.com/basis-spline" target="_blank" rel="noreferrer">github.com/basis-spline</a></p>
+    </section>
   </main>
 
   <footer>
-    <div class="wrap">
-      <div class="small">© <span id="y"></span> Christopher Rager</div>
-      <div class="small">Built as a fast static site. No cookies. No tracking.</div>
-    </div>
+    <hr>
+    <div>© <span id="year"></span> Christopher Rager. Built with plain HTML+CSS+JS. Theme: FT paper with eye-saver yellow and deep green.</div>
   </footer>
 
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Minimal content model (easy to edit inline)
+    const PROJECTS = [
+      { title: 'UAV Avionics GNC Board', summary: 'IMU + baro + GPS-in, ESC PWM outs. KiCad 9, STM32.', tags:['KiCad','STM32','GNC'], link:'#' },
+      { title: 'Signal Telemetry Decoder', summary: 'GNU Radio + Python pipeline for satellite beacons with live labeling.', tags:['GNU Radio','DSP','Python'], link:'#' },
+      { title: 'Chess Engine (Pygame + AI)', summary: 'Alpha-beta, piece-square tables, phase-aware eval.', tags:['Python','AI','Pygame'], link:'#' },
+      { title: 'Rogue Echo Bike Metrics', summary: 'PR tracker and weekly progress export.', tags:['React','TypeScript','Fitness'], link:'#' }
+    ];
+
+    const LAB = [
+      { title: 'Level shifting for 3.3V → 5V ESC signals', date:'2025-08-05', url:'#', blurb:'Quick test of MOSFET + pull-ups; checked rise times on SDS1104X-E.' },
+      { title: 'GNURadio QPSK demod cleanup', date:'2025-07-28', url:'#', blurb:'AGC and Costas tweaks; plotted EVM before/after.' },
+      { title: 'JST-XH footprint notes for OSH Park', date:'2025-07-19', url:'#', blurb:'Pad length, solder fillet, keepout reminders.' }
+    ];
+
+    const POSTS = [
+      { title: 'Taming Telemetry: Practical DSP Notes', date:'2025-06-02', url:'#' },
+      { title: 'StrongLifts → Hypertrophy: a shift', date:'2025-05-11', url:'#' },
+      { title: 'Ground Truth: Cheap Sat RX Stations', date:'2025-04-18', url:'#' }
+    ];
+
+    function chip(text){ return `<span style="font-size:12px;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:2px 8px;margin-right:6px;background:#fff">${text}</span>` }
+
+    function renderProjects(){
+      const grid = document.getElementById('project-grid');
+      grid.innerHTML = PROJECTS.map(p => `
+        <article class="item">
+          <h3><a href="${p.link}">${p.title}</a></h3>
+          <div class="meta">${p.tags.map(chip).join('')}</div>
+          <p>${p.summary}</p>
+          <p><a class="underline" href="${p.link}">Open →</a></p>
+        </article>
+      `).join('');
+    }
+
+    function renderLab(){
+      const list = document.getElementById('lab-list');
+      list.innerHTML = LAB.map(n => `
+        <article class="item">
+          <h3><a href="${n.url}">${n.title}</a></h3>
+          <div class="meta">${n.date}</div>
+          <p>${n.blurb}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderPosts(){
+      const list = document.getElementById('post-list');
+      list.innerHTML = POSTS.map(p => `
+        <article class="item">
+          <h3><a href="${p.url}">${p.title}</a></h3>
+          <div class="meta">${p.date}</div>
+        </article>
+      `).join('');
+    }
+
+    renderProjects();
+    renderLab();
+    renderPosts();
+
+    // Mobile menu toggle
+    const burger = document.querySelector('.burger');
+    const topnav = document.getElementById('topnav');
+    burger.addEventListener('click', ()=>{
+      const open = topnav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+    });
+
+    // Scrollspy: highlight the current section in nav
+    const links = [...document.querySelectorAll('#topnav a')].filter(a=>a.hash);
+    const sections = links.map(a=>document.querySelector(a.hash)).filter(Boolean);
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          links.forEach(a=>a.classList.toggle('active', a.hash === '#' + e.target.id));
+        }
+      });
+    },{rootMargin:'-40% 0px -55% 0px', threshold:0});
+    sections.forEach(s=>obs.observe(s));
   </script>
 </body>
 </html>
