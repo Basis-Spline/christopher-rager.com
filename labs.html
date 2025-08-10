@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Notes — Christopher Rager</title>
+  <meta name="description" content="Lab notes by Christopher Rager — build logs, experiments, and fixes." />
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FFF7E8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1210" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-soft:#FFF7E8; --ink-dark:#2E2E2E; --ink-muted:#555555;
+      --evergreen:#05472A; --forest:#2E6F40; --slate:#6D8196; --burnt:#BE5103;
+      --card:#FFFBF2; --rule:rgba(0,0,0,.1); --shadow:0 8px 24px rgba(0,0,0,.06);
+      --chip-bg:#F4EFE6; --chip-border:rgba(0,0,0,.14); --chip-ink:#2E2E2E;
+      --bg:var(--bg-soft); --ink:var(--ink-dark); --muted:var(--ink-muted); --accent:var(--evergreen);
+      --radius:16px;
+      --step--1: clamp(.85rem,.8rem + .2vw, .95rem);
+      --step-0:  clamp(1rem, .9rem + .6vw, 1.1rem);
+      --step-1:  clamp(1.15rem,1rem + 1vw,1.35rem);
+      --step-2:  clamp(1.35rem,1.1rem + 1.6vw,1.8rem);
+      --step-3:  clamp(1.6rem, 1.2rem + 2.4vw,2.2rem);
+      --space:   clamp(10px, 1.2vw, 18px);
+    }
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme]){
+        --bg:#0F1210; --card:#14171A; --ink:#EAEAEA; --muted:#A6AFB7;
+        --rule:rgba(255,255,255,.08); --shadow:0 10px 28px rgba(0,0,0,.35); --accent:var(--evergreen);
+        --chip-bg:#1F2521; --chip-border:rgba(255,255,255,.16); --chip-ink:#EAEAEA;
+      }
+    }
+    :root[data-theme="light"]{ --bg:var(--bg-soft); --card:#FFFBF2; --ink:var(--ink-dark); --muted:var(--ink-muted); --rule:rgba(0,0,0,.1); --shadow:0 8px 24px rgba(0,0,0,.06); --accent:var(--evergreen); --chip-bg:#F4EFE6; --chip-border:rgba(0,0,0,.14); --chip-ink:#2E2E2E; }
+    :root[data-theme="dark"]{ --bg:#0F1210; --card:#14171A; --ink:#EAEAEA; --muted:#A6AFB7; --rule:rgba(255,255,255,.08); --shadow:0 10px 28px rgba(0,0,0,.35); --accent:var(--evergreen); --chip-bg:#1F2521; --chip-border:rgba(255,255,255,.16); --chip-ink:#EAEAEA; }
+
+    *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth} :target{scroll-margin-top:72px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:var(--step-0)}
+    a{color:inherit;text-decoration:none} a.underline{text-decoration:underline} img{max-width:100%;display:block} code,kbd,pre{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+
+    header{position:sticky;top:0;z-index:60;background:var(--bg);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--rule)}
+    .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand-icon{width:26px;height:26px;object-fit:cover;border-radius:6px;box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent)}
+    .brand h1{font-size:var(--step-1);margin:0}
+    nav{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .nav a{padding:8px 10px;border-radius:10px}
+    .nav a:hover,.nav a.active{background:color-mix(in oklab, var(--slate) 22%, transparent)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+    .burger{display:none}
+
+    .wrap{max-width:1100px;margin:0 auto;padding:calc(var(--space)*1.2)}
+    section{padding:18px;border:1px solid var(--rule);border-radius:16px;background:var(--card);box-shadow:var(--shadow);margin-bottom:18px}
+    h2{margin:0 0 6px;font-size:var(--step-2);line-height:1.25}
+    .sub{color:var(--muted);font-size:var(--step--1);margin-bottom:10px}
+    .list{display:grid;gap:12px}
+    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}
+    .item:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.10);border-color:var(--accent)}
+    .meta{font-size:12px;color:var(--muted)}
+    .chip{display:inline-block;font-size:12px;font-weight:600;line-height:1;padding:4px 8px;border-radius:999px;background:var(--chip-bg);color:var(--chip-ink);border:1px solid var(--chip-border);margin-right:6px}
+    .item:target{outline:2px solid var(--accent);outline-offset:4px;border-color:var(--accent)}
+    footer{max-width:1100px;margin:24px auto;padding:0 calc(var(--space)*1.2) 32px;color:var(--muted);font-size:var(--step--1)}
+    #bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:70}
+    #totop{position:fixed;right:16px;bottom:16px;display:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--rule);background:var(--accent);color:#fff;box-shadow:var(--shadow);align-items:center;justify-content:center;padding:0;cursor:pointer}
+    #totop:hover{background:color-mix(in oklab, var(--accent) 82%, white 18%)} #totop svg{width:22px;height:22px}
+
+    /* Themed chips (same map as Projects) */
+    .t-python{background:color-mix(in oklab,#BE5103 22%,var(--chip-bg));border-color:color-mix(in oklab,#BE5103 45%,var(--chip-border))}
+    .t-ai{background:color-mix(in oklab,#6D8196 22%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 45%,var(--chip-border))}
+    .t-pygame{background:color-mix(in oklab,#DCA1A1 22%,var(--chip-bg));border-color:color-mix(in oklab,#DCA1A1 45%,var(--chip-border))}
+    .t-kicad{background:color-mix(in oklab,#D4AF37 22%,var(--chip-bg));border-color:color-mix(in oklab,#D4AF37 45%,var(--chip-border))}
+    .t-stm32{background:color-mix(in oklab,#05472A 20%,var(--chip-bg));border-color:color-mix(in oklab,#05472A 45%,var(--chip-border))}
+    .t-gnc{background:color-mix(in oklab,#2E6F40 22%,var(--chip-bg));border-color:color-mix(in oklab,#2E6F40 45%,var(--chip-border))}
+    .t-gnu-radio,.t-dsp{background:color-mix(in oklab,#6D8196 22%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 45%,var(--chip-border))}
+    .t-js{background:color-mix(in oklab,#D4AF37 16%,var(--chip-bg));border-color:color-mix(in oklab,#D4AF37 40%,var(--chip-border))}
+    .t-analytics{background:color-mix(in oklab,#6D8196 18%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 40%,var(--chip-border))}
+    .t-fitness{background:color-mix(in oklab,#DCA1A1 20%,var(--chip-bg));border-color:color-mix(in oklab,#DCA1A1 40%,var(--chip-border))}
+    .t-rf{background:color-mix(in oklab,#660033 18%,var(--chip-bg));border-color:color-mix(in oklab,#660033 40%,var(--chip-border))}
+    .t-uav{background:color-mix(in oklab,#2E6F40 24%,var(--chip-bg));border-color:color-mix(in oklab,#2E6F40 46%,var(--chip-border))}
+    .t-embedded{background:color-mix(in oklab,#05472A 16%,var(--chip-bg));border-color:color-mix(in oklab,#05472A 38%,var(--chip-border))}
+    .t-esp32{background:color-mix(in oklab,#6D8196 16%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 38%,var(--chip-border))}
+    .t-sdr{background:color-mix(in oklab,#6D8196 20%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 42%,var(--chip-border))}
+    .t-pcb{background:color-mix(in oklab,#D4AF37 18%,var(--chip-bg));border-color:color-mix(in oklab,#D4AF37 40%,var(--chip-border))}
+    .t-linux{background:color-mix(in oklab,#6D8196 16%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 38%,var(--chip-border))}
+    .t-docker{background:color-mix(in oklab,#6D8196 16%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 38%,var(--chip-border))}
+    .t-matlab{background:color-mix(in oklab,#D4AF37 14%,var(--chip-bg));border-color:color-mix(in oklab,#D4AF37 34%,var(--chip-border))}
+    .t-ros{background:color-mix(in oklab,#6D8196 18%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 40%,var(--chip-border))}
+    .t-uavcan{background:color-mix(in oklab,#2E6F40 18%,var(--chip-bg));border-color:color-mix(in oklab,#2E6F40 40%,var(--chip-border))}
+    .t-i2c,.t-spi{background:color-mix(in oklab,#05472A 12%,var(--chip-bg));border-color:color-mix(in oklab,#05472A 34%,var(--chip-border))}
+    .t-qpsk{background:color-mix(in oklab,#660033 16%,var(--chip-bg));border-color:color-mix(in oklab,#660033 38%,var(--chip-border))}
+    .t-plotting{background:color-mix(in oklab,#DCA1A1 14%,var(--chip-bg));border-color:color-mix(in oklab,#DCA1A1 34%,var(--chip-border))}
+  </style>
+</head>
+<body>
+  <div id="bar"></div>
+  <header>
+    <div class="bar">
+      <div class="brand">
+        <img class="brand-icon" alt="Sun polyhedron icon" src="images/Kepler_Dodecahedron_Universe.png">
+        <div><h1>Christopher Rager</h1></div>
+      </div>
+      <nav id="topnav" class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a class="active" href="lab.html">Lab Notes</a>
+        <a href="writing.html">Writing</a>
+        <button id="theme" class="icon-btn" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+          <svg id="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <a class="icon-btn" href="https://github.com/basis-spline" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.65 0 8.15c0 3.6 2.29 6.64 5.47 7.72.4.07.55-.18.55-.4 0-.2-.01-.87-.01-1.58-2.01.44-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.52 0-.53.63-.01 1.08.6 1.23.85.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.05 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.32.82 2.22 0 3.15-1.87 3.84-3.65 4.05.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4A8.13 8.13 0 0016 8.15C16 3.65 12.42 0 8 0z"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section>
+      <h2>Lab Notes</h2>
+      <div class="sub">Build logs, experiments, fixes</div>
+      <div class="list" id="lab-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer><hr><div style="max-width:1100px;margin:0 auto;padding:0 calc(var(--space)*1.2) 32px;color:var(--muted);font-size:var(--step--1)">© <span id="year"></span> Christopher Rager.</div></footer>
+
+  <button id="totop" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lab entries with slugs, tags, and blurbs
+    const LAB = [
+      { title:'Level shifting for 3.3V → 5V ESC signals', slug:'esc-level-shifting', date:'2025-08-05', tags:['STM32','Embedded','I2C'], url:'#', blurb:'MOSFET + pull-ups; checked rise times on SDS1104X-E.' },
+      { title:'GNURadio QPSK demod cleanup', slug:'gnuradio-qpsk-demod-cleanup', date:'2025-07-28', tags:['GNU Radio','DSP','QPSK'], url:'#', blurb:'AGC and Costas tweaks; plotted EVM before/after.' },
+      { title:'JST-XH footprint notes for OSH Park', slug:'jst-xh-footprint-notes', date:'2025-07-19', tags:['PCB','KiCad'], url:'#', blurb:'Pad length, solder fillet, keepout reminders.' },
+      { title:'STM32 timer capture for ESC tach', slug:'stm32-timer-capture-esc-tach', date:'2025-06-29', tags:['STM32','Embedded'], url:'#', blurb:'Input capture, DMA ring buffer, overflow handling.' },
+      { title:'ESP32 deep sleep current audit', slug:'esp32-deep-sleep-current-audit', date:'2025-06-11', tags:['ESP32','Embedded','I2C','SPI'], url:'#', blurb:'Board leaks: LDO IQ vs sensor pull-ups; fixed to 14µA.' }
+    ];
+
+    // Tag theming map (same as Projects)
+    const TAG_CLASS = {
+      'Python':'t-python','AI':'t-ai','Pygame':'t-pygame','KiCad':'t-kicad','STM32':'t-stm32','GNC':'t-gnc',
+      'GNU Radio':'t-gnu-radio','DSP':'t-dsp','JS':'t-js','Analytics':'t-analytics','Fitness':'t-fitness',
+      'RF':'t-rf','UAV':'t-uav','Embedded':'t-embedded','ESP32':'t-esp32','SDR':'t-sdr','PCB':'t-pcb',
+      'Linux':'t-linux','Docker':'t-docker','MATLAB':'t-matlab','ROS':'t-ros','UAVCAN':'t-uavcan',
+      'I2C':'t-i2c','SPI':'t-spi','QPSK':'t-qpsk','Plotting':'t-plotting','C++':'t-rust'
+    };
+    const chip = (t) => `<span class="chip ${TAG_CLASS[t]||''}">${t}</span>`;
+
+    function renderLab(list=LAB){
+      const el=document.getElementById('lab-list');
+      el.innerHTML = list.map(n => `
+        <article class="item" id="${n.slug}">
+          <h3><a href="lab.html#${n.slug}">${n.title}</a></h3>
+          <div class="meta">${n.date} &nbsp; ${(n.tags||[]).map(chip).join('')}</div>
+          <p>${n.blurb}</p>
+          <p><a class="underline" href="lab.html#${n.slug}">Open →</a></p>
+        </article>
+      `).join('');
+    }
+
+    function addPrevNext(items){
+      const ids = items.map(x => x.slug);
+      ids.forEach((id,i)=>{
+        const el=document.getElementById(id); if(!el) return;
+        const prev=ids[i-1], next=ids[i+1];
+        const nav=document.createElement('div'); nav.className='meta'; nav.style.marginTop='8px';
+        nav.innerHTML = `${prev?`<a class="underline" href="#${prev}">← Previous</a>`:''}${prev&&next?' &nbsp;|&nbsp; ':''}${next?`<a class="underline" href="#${next}">Next →</a>`:''}`;
+        el.appendChild(nav);
+      });
+    }
+
+    // Initial render
+    renderLab(); addPrevNext(LAB);
+
+    // Jump to hash on load
+    if(location.hash){ document.querySelector(location.hash)?.scrollIntoView({behavior:'instant',block:'start'}); }
+
+    // Progress bar + to-top
+    const topBtn=document.getElementById('totop');
+    addEventListener('scroll', ()=>{
+      const y=scrollY, h=document.body.scrollHeight-innerHeight;
+      document.getElementById('bar').style.width=(y/Math.max(h,1)*100)+'%';
+      topBtn.style.display = y>400?'inline-flex':'none';
+    });
+    topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+    // Theme toggle
+    const key="theme", root=document.documentElement, btn=document.getElementById('theme');
+    const ICONS={sun:`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>`,moon:`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`};
+    function setTheme(t){ root.setAttribute('data-theme',t); localStorage.setItem(key,t); btn.innerHTML=t==='dark'?ICONS.sun:ICONS.moon; btn.setAttribute('aria-pressed',t==='dark');
+      const metaLight=document.querySelector('meta[name="theme-color"][media*="light"]'), metaDark=document.querySelector('meta[name="theme-color"][media*="dark"]');
+      if(t==='dark'){ metaDark?.setAttribute('content','#0F1210'); } else { metaLight?.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#FFF7E8'); } }
+    const saved=localStorage.getItem(key); setTheme(saved ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    btn.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+    // Mark active nav by URL
+    const path = location.pathname.split('/').pop() || 'lab.html';
+    document.querySelectorAll('#topnav a').forEach(a=>{ if((a.getAttribute('href')||'').endsWith(path)) a.classList.add('active'); });
+  </script>
+</body>
+</html>
