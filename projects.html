@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Projects — Christopher Rager</title>
-  <meta name="description" content="Projects by Christopher Rager — embedded systems, RF/DSP, software tools." />
+  <meta name="description" content="Projects by Christopher Rager — embedded systems, RF/DSP, software, analytics." />
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#FFF7E8" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0F1210" media="(prefers-color-scheme: dark)">
@@ -12,60 +12,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg-soft:#FFF7E8; --ink-dark:#2E2E2E; --ink-muted:#555555;
-      --evergreen:#05472A; --forest:#2E6F40; --slate:#6D8196; --burnt:#BE5103;
-      --card:#FFFBF2; --rule:rgba(0,0,0,.1); --shadow:0 8px 24px rgba(0,0,0,.06);
-      --chip-bg:#F4EFE6; --chip-border:rgba(0,0,0,.14); --chip-ink:#2E2E2E;
-      --bg:var(--bg-soft); --ink:var(--ink-dark); --muted:var(--ink-muted); --accent:var(--evergreen);
-      --radius:16px;
-      --step--1: clamp(.85rem,.8rem + .2vw, .95rem);
-      --step-0:  clamp(1rem, .9rem + .6vw, 1.1rem);
-      --step-1:  clamp(1.15rem,1rem + 1vw,1.35rem);
-      --step-2:  clamp(1.35rem,1.1rem + 1.6vw,1.8rem);
-      --step-3:  clamp(1.6rem, 1.2rem + 2.4vw,2.2rem);
-      --space:   clamp(10px, 1.2vw, 18px);
-    }
-    @media (prefers-color-scheme: dark){
-      :root:not([data-theme]){
-        --bg:#0F1210; --card:#14171A; --ink:#EAEAEA; --muted:#A6AFB7;
-        --rule:rgba(255,255,255,.08); --shadow:0 10px 28px rgba(0,0,0,.35); --accent:var(--evergreen);
-        --chip-bg:#1F2521; --chip-border:rgba(255,255,255,.16); --chip-ink:#EAEAEA;
-      }
-    }
-    :root[data-theme="light"]{ --bg:var(--bg-soft); --card:#FFFBF2; --ink:var(--ink-dark); --muted:var(--ink-muted); --rule:rgba(0,0,0,.1); --shadow:0 8px 24px rgba(0,0,0,.06); --accent:var(--evergreen); --chip-bg:#F4EFE6; --chip-border:rgba(0,0,0,.14); --chip-ink:#2E2E2E; }
-    :root[data-theme="dark"]{ --bg:#0F1210; --card:#14171A; --ink:#EAEAEA; --muted:#A6AFB7; --rule:rgba(255,255,255,.08); --shadow:0 10px 28px rgba(0,0,0,.35); --accent:var(--evergreen); --chip-bg:#1F2521; --chip-border:rgba(255,255,255,.16); --chip-ink:#EAEAEA; }
-
+    /* same shared styles as index, plus grid & chips */
+    :root{--bg-soft:#FFF7E8;--ink-dark:#2E2E2E;--ink-muted:#555555;--evergreen:#05472A;--forest:#2E6F40;--slate:#6D8196;--burnt:#BE5103;--card:#FFFBF2;--rule:rgba(0,0,0,.1);--shadow:0 8px 24px rgba(0,0,0,.06);--chip-bg:#F4EFE6;--chip-border:rgba(0,0,0,.14);--chip-ink:#2E2E2E;--bg:var(--bg-soft);--ink:var(--ink-dark);--muted:var(--ink-muted);--accent:var(--evergreen);--radius:16px;--step--1:clamp(.85rem,.8rem + .2vw,.95rem);--step-0:clamp(1rem,.9rem + .6vw,1.1rem);--step-1:clamp(1.15rem,1rem + 1vw,1.35rem);--step-2:clamp(1.35rem,1.1rem + 1.6vw,1.8rem);--step-3:clamp(1.6rem,1.2rem + 2.4vw,2.2rem);--space:clamp(10px,1.2vw,18px)}
+    @media (prefers-color-scheme: dark){:root:not([data-theme]){--bg:#0F1210;--card:#14171A;--ink:#EAEAEA;--muted:#A6AFB7;--rule:rgba(255,255,255,.08);--shadow:0 10px 28px rgba(0,0,0,.35);--accent:var(--evergreen);--chip-bg:#1F2521;--chip-border:rgba(255,255,255,.16);--chip-ink:#EAEAEA}}
+    :root[data-theme="light"]{--bg:var(--bg-soft);--card:#FFFBF2;--ink:var(--ink-dark);--muted:var(--ink-muted);--rule:rgba(0,0,0,.1);--shadow:0 8px 24px rgba(0,0,0,.06);--accent:var(--evergreen);--chip-bg:#F4EFE6;--chip-border:rgba(0,0,0,.14);--chip-ink:#2E2E2E}
+    :root[data-theme="dark"]{--bg:#0F1210;--card:#14171A;--ink:#EAEAEA;--muted:#A6AFB7;--rule:rgba(255,255,255,.08);--shadow:0 10px 28px rgba(0,0,0,.35);--accent:var(--evergreen);--chip-bg:#1F2521;--chip-border:rgba(255,255,255,.16);--chip-ink:#EAEAEA}
     *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth} :target{scroll-margin-top:72px}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:var(--step-0)}
-    a{color:inherit;text-decoration:none} a.underline{text-decoration:underline} img{max-width:100%;display:block} code,kbd,pre{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
-
-    header{position:sticky;top:0;z-index:60;background:var(--bg);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--rule)}
-    .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand-icon{width:26px;height:26px;object-fit:cover;border-radius:6px;box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent)}
-    .brand h1{font-size:var(--step-1);margin:0}
-    nav{margin-left:auto;display:flex;align-items:center;gap:8px}
-    .nav a{padding:8px 10px;border-radius:10px}
-    .nav a:hover,.nav a.active{background:color-mix(in oklab, var(--slate) 22%, transparent)}
-    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
-    .burger{display:none}
-
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;font-size:var(--step-0)}
+    a{color:inherit;text-decoration:none} a.underline{text-decoration:underline}
     .wrap{max-width:1100px;margin:0 auto;padding:calc(var(--space)*1.2)}
-    section{padding:18px;border:1px solid var(--rule);border-radius:16px;background:var(--card);box-shadow:var(--shadow);margin-bottom:18px}
-    h2{margin:0 0 6px;font-size:var(--step-2);line-height:1.25}
-    .sub{color:var(--muted);font-size:var(--step--1);margin-bottom:10px}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (min-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}
+    section{padding:18px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);margin-bottom:18px}
+    h2{margin:0 0 6px;font-size:var(--step-2)} .sub{color:var(--muted);font-size:var(--step--1);margin-bottom:10px}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px} @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}} @media (min-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
     .item:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.10);border-color:var(--accent)}
     .meta{font-size:12px;color:var(--muted)}
     .chip{display:inline-block;font-size:12px;font-weight:600;line-height:1;padding:4px 8px;border-radius:999px;background:var(--chip-bg);color:var(--chip-ink);border:1px solid var(--chip-border);margin-right:6px}
-    #filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-    #filters .btn{background:var(--chip-bg);color:var(--chip-ink);border:1px solid var(--chip-border);box-shadow:none;padding:6px 10px;border-radius:999px}
+    .item:target{outline:2px solid var(--accent);outline-offset:4px;border-color:var(--accent)}
+    #bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:70}
+    #totop{position:fixed;right:16px;bottom:16px;display:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--rule);background:var(--accent);color:#fff;box-shadow:var(--shadow);align-items:center;justify-content:center;padding:0;cursor:pointer}
+    #totop:hover{background:color-mix(in oklab, var(--accent) 82%, white 18%)} #totop svg{width:22px;height:22px}
 
-    /* Themed chips */
+    /* themed chips (same map for all pages) */
     .t-python{background:color-mix(in oklab,#BE5103 22%,var(--chip-bg));border-color:color-mix(in oklab,#BE5103 45%,var(--chip-border))}
     .t-ai{background:color-mix(in oklab,#6D8196 22%,var(--chip-bg));border-color:color-mix(in oklab,#6D8196 45%,var(--chip-border))}
     .t-pygame{background:color-mix(in oklab,#DCA1A1 22%,var(--chip-bg));border-color:color-mix(in oklab,#DCA1A1 45%,var(--chip-border))}
@@ -90,56 +58,27 @@
     .t-i2c,.t-spi{background:color-mix(in oklab,#05472A 12%,var(--chip-bg));border-color:color-mix(in oklab,#05472A 34%,var(--chip-border))}
     .t-qpsk{background:color-mix(in oklab,#660033 16%,var(--chip-bg));border-color:color-mix(in oklab,#660033 38%,var(--chip-border))}
     .t-plotting{background:color-mix(in oklab,#DCA1A1 14%,var(--chip-bg));border-color:color-mix(in oklab,#DCA1A1 34%,var(--chip-border))}
-
-    .item:target{outline:2px solid var(--accent);outline-offset:4px;border-color:var(--accent)}
-    footer{max-width:1100px;margin:24px auto;padding:0 calc(var(--space)*1.2) 32px;color:var(--muted);font-size:var(--step--1)}
-    #bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:70}
-    #totop{position:fixed;right:16px;bottom:16px;display:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--rule);background:var(--accent);color:#fff;box-shadow:var(--shadow);align-items:center;justify-content:center;padding:0;cursor:pointer}
-    #totop:hover{background:color-mix(in oklab, var(--accent) 82%, white 18%)} #totop svg{width:22px;height:22px}
   </style>
 </head>
 <body>
-  <div id="bar"></div>
-  <header>
-    <div class="bar">
-      <div class="brand">
-        <img class="brand-icon" alt="Sun polyhedron icon" src="images/Kepler_Dodecahedron_Universe.png">
-        <div><h1>Christopher Rager</h1></div>
-      </div>
-      <nav id="topnav" class="nav" aria-label="Primary">
-        <a href="index.html">Home</a>
-        <a class="active" href="projects.html">Projects</a>
-        <a href="lab.html">Lab Notes</a>
-        <a href="writing.html">Writing</a>
-        <button id="theme" class="icon-btn" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
-          <svg id="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-        </button>
-        <a class="icon-btn" href="https://github.com/basis-spline" target="_blank" rel="noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.65 0 8.15c0 3.6 2.29 6.64 5.47 7.72.4.07.55-.18.55-.4 0-.2-.01-.87-.01-1.58-2.01.44-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.52 0-.53.63-.01 1.08.6 1.23.85.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.05 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.32.82 2.22 0 3.15-1.87 3.84-3.65 4.05.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4A8.13 8.13 0 0016 8.15C16 3.65 12.42 0 8 0z"/></svg>
-        </a>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
-  <main id="main" class="wrap">
+  <main class="wrap">
     <section>
       <h2>Projects</h2>
       <div class="sub">Selected builds with links</div>
-      <div id="filters"></div>
+      <div id="filters" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"></div>
       <div class="grid" id="project-grid" aria-live="polite"></div>
     </section>
   </main>
 
-  <footer><hr><div style="max-width:1100px;margin:0 auto;padding:0 calc(var(--space)*1.2) 32px;color:var(--muted);font-size:var(--step--1)">© <span id="year"></span> Christopher Rager.</div></footer>
+  <div id="site-footer"></div>
 
-  <button id="totop" aria-label="Back to top" title="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>
-  </button>
-
+  <script src="js/site.js"></script>
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    renderHeader('projects'); renderFooter(); initThemeToggle();
 
-    // Data with slugs for deep-linking
+    // ---- Data (with slugs) ----
     const PROJECTS = [
       { title:'UAV Avionics GNC Board', slug:'uav-avionics-gnc-board', summary:'IMU + baro + GPS-in, ESC PWM outs. KiCad 9, STM32.', tags:['KiCad','STM32','GNC','UAV','Embedded','PCB'], link:'#' },
       { title:'Signal Telemetry Decoder', slug:'signal-telemetry-decoder', summary:'GNU Radio + Python pipeline for satellite beacons with live labeling.', tags:['GNU Radio','DSP','Python','SDR','RF'], link:'#' },
@@ -149,6 +88,7 @@
       { title:'Portable SDR Station', slug:'portable-sdr-station', summary:'RPi + SDR + QPSK demod; ruggedized 3D-printed case.', tags:['SDR','QPSK','Linux','Docker','RF'], link:'#' }
     ];
 
+    // ---- Tag theming map (shared palette) ----
     const TAG_CLASS = {
       'Python':'t-python','AI':'t-ai','Pygame':'t-pygame','KiCad':'t-kicad','STM32':'t-stm32','GNC':'t-gnc',
       'GNU Radio':'t-gnu-radio','DSP':'t-dsp','JS':'t-js','Analytics':'t-analytics','Fitness':'t-fitness',
@@ -159,36 +99,32 @@
     const chip = (t) => `<span class="chip ${TAG_CLASS[t]||''}">${t}</span>`;
 
     function renderProjects(list=PROJECTS){
-      const grid=document.getElementById('project-grid');
-      grid.innerHTML=list.map(p=>`
+      const grid = document.getElementById('project-grid');
+      grid.innerHTML = list.map(p => `
         <article class="item" id="${p.slug}">
-          <h3><a href="projects.html#${p.slug}">${p.title}</a></h3>
+          <h3><a href="\${pageLink('projects','${p.slug}')}">${p.title}</a></h3>
           <div class="meta">${(p.tags||[]).map(chip).join('')}</div>
           <p>${p.summary}</p>
-          <p><a class="underline" href="projects.html#${p.slug}">Open →</a></p>
+          <p><a class="underline" href="\${pageLink('projects','${p.slug}')}">Open →</a></p>
         </article>
       `).join('');
     }
 
-    function buildFilters(){
-      const tags=[...new Set(PROJECTS.flatMap(p=>p.tags||[]))];
-      const filters=document.getElementById('filters');
-      filters.innerHTML=['All',...tags].map(t=>{
-        const cls=t==='All'?'':(TAG_CLASS[t]||'');
-        return `<button class="btn ${cls}" data-t="${t}">${t}</button>`;
-      }).join('');
-      filters.onclick=(e)=>{
-        const t=e.target?.dataset?.t; if(!t) return;
-        const subset=t==='All'?PROJECTS:PROJECTS.filter(p=>p.tags?.includes(t));
-        renderProjects(subset);
-        // keep hash target highlight after filtering if a target exists
-        if(location.hash){ const el=document.querySelector(location.hash); el?.scrollIntoView({behavior:'smooth',block:'start'}); }
-      };
-    }
+    // Filters as themed chips
+    const tags=[...new Set(PROJECTS.flatMap(p=>p.tags||[]))];
+    const filters=document.getElementById('filters');
+    filters.innerHTML=['All',...tags].map(t=>{
+      const cls = t==='All' ? '' : (TAG_CLASS[t]||'');
+      return `<button class="chip ${cls}" data-t="${t}">${t}</button>`;
+    }).join('');
+    filters.onclick=(e)=>{
+      const t=e.target?.dataset?.t; if(!t) return;
+      const subset = t==='All'? PROJECTS : PROJECTS.filter(p=>p.tags?.includes(t));
+      renderProjects(subset);
+    };
 
-    // Prev/Next within category
     function addPrevNext(items){
-      const ids=items.map(x=>x.slug);
+      const ids = items.map(x=>x.slug);
       ids.forEach((id,i)=>{
         const el=document.getElementById(id); if(!el) return;
         const prev=ids[i-1], next=ids[i+1];
@@ -198,33 +134,7 @@
       });
     }
 
-    // Initial render
-    renderProjects(); buildFilters(); addPrevNext(PROJECTS);
-
-    // Jump to hash on load
-    if(location.hash){ document.querySelector(location.hash)?.scrollIntoView({behavior:'instant',block:'start'}); }
-
-    // Progress bar + to-top
-    const topBtn=document.getElementById('totop');
-    addEventListener('scroll', ()=>{
-      const y=scrollY, h=document.body.scrollHeight-innerHeight;
-      document.getElementById('bar').style.width=(y/Math.max(h,1)*100)+'%';
-      topBtn.style.display = y>400?'inline-flex':'none';
-    });
-    topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
-
-    // Theme toggle
-    const key="theme", root=document.documentElement, btn=document.getElementById('theme');
-    const ICONS={sun:`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>`,moon:`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`};
-    function setTheme(t){ root.setAttribute('data-theme',t); localStorage.setItem(key,t); btn.innerHTML=t==='dark'?ICONS.sun:ICONS.moon; btn.setAttribute('aria-pressed',t==='dark');
-      const metaLight=document.querySelector('meta[name="theme-color"][media*="light"]'), metaDark=document.querySelector('meta[name="theme-color"][media*="dark"]');
-      if(t==='dark'){ metaDark?.setAttribute('content','#0F1210'); } else { metaLight?.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#FFF7E8'); } }
-    const saved=localStorage.getItem(key); setTheme(saved ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-    btn.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
-
-    // Mark active nav by URL
-    const path = location.pathname.split('/').pop() || 'projects.html';
-    document.querySelectorAll('#topnav a').forEach(a=>{ if((a.getAttribute('href')||'').endsWith(path)) a.classList.add('active'); });
+    renderProjects(); addPrevNext(PROJECTS);
   </script>
 </body>
 </html>
