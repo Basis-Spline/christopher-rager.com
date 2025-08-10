@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Christopher Rager — Engineering & Research Portfolio</title>
+  <meta name="description" content="Engineering and research portfolio of Christopher Rager: electrical engineering projects, UAV/satellite work, notes, and contact." />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Christopher Rager — Engineering & Research Portfolio" />
+  <meta property="og:description" content="Electrical engineering projects, research notes, and contact." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://christopher-rager.com" />
+  <meta property="og:image" content="/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon (replace /favicon.svg with your own) -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate icon" href="/favicon.ico" />
+
+  <!-- Fonts: system serif/mono to keep it light and retro -->
+  <style>
+    :root {
+      /* Financial Times paper pink and Pickett Eye Saver Yellow */
+      --ft-pink: #f6e1d3;
+      --ft-pink-2: #efd9ca; /* slightly darker for headers */
+      --pickett-yellow: #fff44f;
+      --ink: #2b2b2b;
+      --navy: #003366;
+      --link-hover: #0000cc;
+      --card: #fff7f0;
+      --muted: #5b5b5b;
+      --border: #d7c7b8;
+      --maxw: 960px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--ft-pink);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", Times, serif;
+      line-height: 1.6;
+      font-size: 18px;
+    }
+
+    a { color: var(--navy); text-underline-offset: 2px; }
+    a:hover { color: var(--link-hover); }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+
+    header {
+      background: var(--ft-pink-2);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex; align-items: baseline; gap: 12px;
+      padding-top: 8px; padding-bottom: 8px;
+    }
+    .brand h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; }
+    .brand .tag { color: var(--muted); font-size: 16px; }
+
+    nav { margin-top: 8px; }
+    nav ul { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; margin: 0; padding: 0; }
+    nav a { text-decoration: underline; }
+
+    .grid {
+      display: grid; gap: 20px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 2fr 1fr; }
+    }
+
+    .section { margin-top: 28px; }
+    .section h2 { margin: 0 0 10px; font-size: 24px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .projects { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 700px) { .projects { grid-template-columns: 1fr 1fr; } }
+
+    .proj h3 { margin: 0 0 6px; font-size: 20px; }
+    .meta { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+    .tags { font-size: 13px; color: var(--muted); }
+    .tags code { background: var(--pickett-yellow); color: #000; padding: 2px 6px; border-radius: 6px; }
+
+    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    pre {
+      background: #fffbe0; /* softer yellow block for code */
+      border: 1px solid var(--border);
+      padding: 12px; border-radius: 6px; overflow-x: auto;
+    }
+
+    .sidebar .card { position: sticky; top: 16px; }
+
+    .yellow-banner {
+      background: var(--pickett-yellow);
+      color: #000;
+      border: 1px solid #e2d600;
+      padding: 10px 14px; border-radius: 8px; font-weight: 600;
+    }
+
+    footer { margin-top: 40px; border-top: 1px solid var(--border); background: var(--ft-pink-2); }
+    footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; }
+    .small { font-size: 14px; color: var(--muted); }
+
+    .btn { display: inline-block; padding: 8px 12px; border: 1px solid var(--ink); border-radius: 8px; text-decoration: none; }
+    .btn:hover { background: #000; color: #fff; }
+  </style>
+
+  <!-- Structured data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Christopher Rager",
+    "url": "https://christopher-rager.com",
+    "jobTitle": "Electrical Engineering Student / Researcher",
+    "sameAs": [
+      "https://github.com/YOUR_GITHUB",
+      "https://www.linkedin.com/in/YOUR_LINKEDIN"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <h1>Christopher Rager</h1>
+        <span class="tag">Electrical Engineering • UAVs • Satellites • Software</span>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#research">Research Notes</a></li>
+          <li><a href="#writing">Writing</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a class="btn" href="/Christopher_Rager_Resume.pdf">Resume (PDF)</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap grid">
+    <section class="section">
+      <div class="yellow-banner">Currently: building a GNC board concept, RF experiments, and satellite comms tooling.</div>
+
+      <div id="projects" class="section">
+        <h2>Selected Projects</h2>
+        <div class="projects">
+          <article class="card proj">
+            <h3>UAV Guidance/Navigation/Control (GNC) Board</h3>
+            <div class="meta">2025 · KiCad • STM32 • Sensor fusion</div>
+            <p>Custom PCB concept integrating IMU, baro, GNSS, and motor control with a lightweight EKF. Includes simulation notes and firmware scaffolding.</p>
+            <p class="tags">Tags: <code>embedded</code> <code>controls</code> <code>pcb</code></p>
+            <p><a href="#" aria-label="Repo link">Code/Repo</a> · <a href="#" aria-label="Design notes">Design Notes</a></p>
+          </article>
+
+          <article class="card proj">
+            <h3>Satellite Telemetry Ground Station</h3>
+            <div class="meta">2024 · GNU Radio • SDR • Antennas</div>
+            <p>Minimal-cost ground station using SDR and Python decoding pipelines. Includes recordings, demodulation flowgraphs, and decoding utilities.</p>
+            <p class="tags">Tags: <code>rf</code> <code>signal-processing</code> <code>python</code></p>
+            <p><a href="#">Docs</a> · <a href="#">Repository</a></p>
+          </article>
+
+          <article class="card proj">
+            <h3>Traffic Signal Optimization</h3>
+            <div class="meta">2023 · Evolutionary algorithms • Simulation</div>
+            <p>Modeled a five‑intersection corridor and evolved signal timings, reducing peak travel times by ~20% in deployment.</p>
+            <p class="tags">Tags: <code>optimization</code> <code>simulation</code> <code>python</code></p>
+            <p><a href="#">Write‑up</a></p>
+          </article>
+
+          <article class="card proj">
+            <h3>Chess Engine with Pygame UI</h3>
+            <div class="meta">2025 · Minimax • Pygame</div>
+            <p>Lightweight engine with opening book, en passant, dynamic depth by phase, and improved evaluation (PSTs, king safety, center control).</p>
+            <p class="tags">Tags: <code>ai</code> <code>python</code></p>
+            <p><a href="#">Repo</a></p>
+          </article>
+        </div>
+      </div>
+
+      <div id="research" class="section">
+        <h2>Research Notes</h2>
+        <article class="card">
+          <h3>Gravity Gradiometry — Practical Limits</h3>
+          <div class="meta">Notebook · last updated 2025</div>
+          <p>Survey of airborne gravity‑gradient sensing for underground structure detection. Notes on SNR, platform motion, and filtering.</p>
+          <a href="#">PDF</a>
+        </article>
+        <article class="card">
+          <h3>RF Front‑Ends for Small Ground Stations</h3>
+          <div class="meta">Notebook</div>
+          <p>LO stability, front‑end gain planning, and filtering choices for low‑budget VHF/UHF downlinks.</p>
+          <a href="#">Article</a>
+        </article>
+      </div>
+
+      <div id="writing" class="section">
+        <h2>Writing</h2>
+        <article class="card">
+          <h3>Well‑being Metrics in System Design</h3>
+          <p>Thinking through how bottom‑tier well‑being can serve as a leading indicator for resilient systems.</p>
+          <a href="#">Read</a>
+        </article>
+      </div>
+
+      <div class="section">
+        <h2>Sample Code Block</h2>
+        <pre><code>// C++‑style branding for fun
+int main() {
+  // christopher_rager();
+  return 0;
+}
+</code></pre>
+      </div>
+    </section>
+
+    <aside class="sidebar section">
+      <div class="card">
+        <h2>About</h2>
+        <p>I’m Christopher Rager. I study electrical engineering and build things at the intersection of RF, controls, and software. This site collects my projects and notes.</p>
+        <p><strong>Location:</strong> Grand Forks, ND</p>
+
+        <h3>Links</h3>
+        <ul>
+          <li><a href="mailto:you@christopher-rager.com">you@christopher-rager.com</a></li>
+          <li><a href="https://github.com/YOUR_GITHUB">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/YOUR_LINKEDIN">LinkedIn</a></li>
+        </ul>
+
+        <h3>Site Notes</h3>
+        <p>Theme uses Financial Times pink with Pickett Eye Saver Yellow accents for a retro technical feel.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="small">© <span id="y"></span> Christopher Rager</div>
+      <div class="small">Built as a fast static site. No cookies. No tracking.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
