@@ -5,96 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Christopher Rager — Lab</title>
   <meta name="description" content="Projects, notes, and lab logs by Christopher Rager." />
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="color-scheme" content="light dark">
+  <!-- Eye-friendly meta colors -->
+  <meta name="theme-color" content="#FFFACD" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1210" media="(prefers-color-scheme: dark)">
 
+  <!-- Fonts (optional) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
+    /* ===== Theming & tokens (same layout, updated palette + Evergreen accent) ===== */
     :root{
-      --ft-paper:#fff1e5; /* Financial Times paper */
-      --eyesaver:#fff38a; /* eye saver yellow */
-      --accent:#246b5f;   /* deep green */
-      --ink:#0b0b0c;      /* near-black text */
-      --muted:#4e4e56;
-      --card:#ffffff;
+      /* Eye-friendly palette */
+      --bg-soft:#FFFACD;           /* Pale eye-saver yellow (light mode bg) */
+      --ink-dark:#2E2E2E;          /* Primary text */
+      --ink-muted:#555555;         /* Secondary text */
+
+      /* Accents */
+      --evergreen:#05472A;         /* PRIMARY site accent */
+      --forest:#2E6F40;            /* Secondary green if needed */
+      --slate:#6D8196;             /* Cool accent */
+      --burnt:#BE5103;             /* Warm accent */
+      --card:#FFFFFF;
       --rule:rgba(0,0,0,.08);
       --shadow:0 8px 24px rgba(0,0,0,.06);
+
+      /* Site tokens used by layout */
+      --bg:var(--bg-soft);
+      --ink:var(--ink-dark);
+      --muted:var(--ink-muted);
+      --accent:var(--evergreen);   /* << evergreen everywhere */
+
       --radius:16px;
+      --step--1: clamp(.85rem,.8rem + .2vw, .95rem);
+      --step-0:  clamp(1rem, .9rem + .6vw, 1.1rem);
+      --step-1:  clamp(1.15rem,1rem + 1vw,1.35rem);
+      --step-2:  clamp(1.35rem,1.1rem + 1.6vw,1.8rem);
+      --step-3:  clamp(1.6rem, 1.2rem + 2.4vw,2.2rem);
+      --space:   clamp(10px, 1.2vw, 18px);
     }
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme]){
+        --bg:#0F1210;
+        --card:#14171A;
+        --ink:#EAEAEA;
+        --muted:#A6AFB7;
+        --rule:rgba(255,255,255,.08);
+        --shadow:0 10px 28px rgba(0,0,0,.35);
+        --accent:var(--evergreen);
+      }
+    }
+    :root[data-theme="light"]{
+      --bg:var(--bg-soft);
+      --card:#FFFFFF;
+      --ink:var(--ink-dark);
+      --muted:var(--ink-muted);
+      --rule:rgba(0,0,0,.08);
+      --shadow:0 8px 24px rgba(0,0,0,.06);
+      --accent:var(--evergreen);
+    }
+    :root[data-theme="dark"]{
+      --bg:#0F1210;
+      --card:#14171A;
+      --ink:#EAEAEA;
+      --muted:#A6AFB7;
+      --rule:rgba(255,255,255,.08);
+      --shadow:0 10px 28px rgba(0,0,0,.35);
+      --accent:var(--evergreen);
+    }
+
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0;background:var(--ft-paper);color:var(--ink);
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;
-    }
+    html{scroll-behavior:smooth}
+    :target{scroll-margin-top:72px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:var(--step-0)}
+    img{max-width:100%;display:block}
     a{color:inherit;text-decoration:none}
     a.underline{text-decoration:underline}
-    img{max-width:100%;display:block}
     code,kbd,pre{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
 
-    /* ===== Header / Top Nav (replaces left sidebar) ===== */
-    header{position:sticky;top:0;z-index:50;background:rgba(255,241,229,.85);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--rule)}
+    /* ===== Header / Top Nav ===== */
+    header{position:sticky;top:0;z-index:60;background:var(--bg);background-clip:padding-box;backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--rule)}
     .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
     .brand{display:flex;align-items:center;gap:10px}
-    .dot{width:22px;height:22px;border-radius:10px;background:var(--accent)}
-    .brand h1{font-size:18px;margin:0}
+    .brand-icon{
+      width:26px;height:26px;display:block;object-fit:cover;
+      border-radius:6px;
+      box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
+    }
+    .brand h1{font-size:var(--step-1);margin:0}
     .tagline{display:none;color:var(--muted)}
 
-    nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+    nav{margin-left:auto;display:flex;align-items:center;gap:8px}
     .nav a{padding:8px 10px;border-radius:10px}
-    .nav a:hover,.nav a.active{background:var(--eyesaver)}
+    .nav a:hover,.nav a.active{background:color-mix(in oklab, var(--slate) 22%, transparent)}
 
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--rule);background:#fff;box-shadow:var(--shadow)}
-    .btn.primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(36,107,95,.25)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--card);box-shadow:var(--shadow)}
+    .btn.primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 8px 20px color-mix(in oklab, var(--accent) 30%, transparent)}
+
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+    .icon-btn:hover{background:color-mix(in oklab, var(--slate) 20%, #fff0)}
 
     /* Mobile menu */
     .burger{display:none;flex-direction:column;gap:4px;border:0;background:transparent;padding:6px}
-    .burger span{width:22px;height:2px;background:#333}
+    .burger span{width:22px;height:2px;background:currentColor}
     @media (max-width:900px){
       nav{display:none}
-      nav.open{display:flex;position:absolute;left:0;right:0;top:54px;background:var(--ft-paper);padding:10px 16px;border-bottom:1px solid var(--rule)}
+      nav.open{display:flex;position:absolute;left:0;right:0;top:54px;background:var(--bg);padding:10px 16px;border-bottom:1px solid var(--rule)}
       .burger{display:flex;margin-left:auto}
-      .tagline{display:none}
     }
 
     /* ===== Layout ===== */
-    .wrap{max-width:1200px;margin:0 auto;padding:20px;}
+    .wrap{max-width:1100px;margin:0 auto;padding:calc(var(--space)*1.2)}
     section{padding:18px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);margin-bottom:18px}
-    section.accent{background:var(--eyesaver)}
-    h2{margin:0 0 6px;font-size:20px}
-    .sub{color:var(--muted);font-size:14px;margin-bottom:10px}
+    section.accent{background:color-mix(in oklab, var(--slate) 12%, var(--bg))} /* subtle slate wash */
+    h2{margin:0 0 6px;font-size:var(--step-2);line-height:1.25}
+    .sub{color:var(--muted);font-size:var(--step--1);margin-bottom:10px}
     hr{border:none;border-top:1px solid var(--rule);margin:16px 0}
 
-    /* Grids & lists */
+    /* Lists & cards */
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media (min-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
     .list{display:grid;gap:10px}
-    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:#fff}
+    .item{padding:12px;border:1px solid var(--rule);border-radius:14px;background:var(--card);transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}
     .item h3{margin:0 0 4px;font-size:18px}
+    .item:hover,.item:focus-within{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.10);border-color:var(--accent)}
     .meta{font-size:12px;color:var(--muted)}
 
     /* Footer */
-    footer{max-width:1200px;margin:24px auto;padding:0 24px 32px;color:var(--muted);font-size:14px}
+    footer{max-width:1100px;margin:24px auto;padding:0 calc(var(--space)*1.2) 32px;color:var(--muted);font-size:var(--step--1)}
 
     /* Skip link */
     .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:8px;top:8px;width:auto;height:auto;padding:8px 10px;background:#fff;border-radius:8px;box-shadow:var(--shadow)}
+    .skip:focus{left:8px;top:8px;width:auto;height:auto;padding:8px 10px;background:var(--card);border-radius:8px;box-shadow:var(--shadow)}
   </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Progress bar uses evergreen accent -->
+  <div id="bar" style="position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:70"></div>
+
   <header>
     <div class="bar">
       <div class="brand">
-        <div class="dot" aria-hidden="true"></div>
+        <!-- Kepler sun icon (inlined data-URI) -->
+        <img
+          class="brand-icon"
+          alt="Sun polyhedron icon"
+          src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEA8PDw8QDw8QDw8QDw8QDg8PDw8PFRUVFhUSFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGi0lICUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAACAwEE/8QAHxABAAEEAgMAAAAAAAAAAAAAAAECAwQRAAUSITFB/8QAFQEBAQAAAAAAAAAAAAAAAAAABQb/xAAfEQABAwQDAAAAAAAAAAAAAAABAgMRAAQSITEyQXH/2gAMAwEAAhEDEQA/AMG5rTq4i2p1dKpIexW6oQ6eG7oZ4b+oO3eV+JgqzD0sP2R8W8i2r7cKfI2v8AqU6F2r3zqk6lG8h5nqfR7bY2m1R9mXh4eWm1wZp5F1JkO0fB8iN4yX1o1m0wXK8p0b1kqJtS2o0R8c3N2zK8q3g2QFqZ3Iu0i3m7yV4kq0q4rUo2a2bYq0w0o0dS7b9e8kE2l7i2m3V1tN9qZQm2wQ5Qv5I2m1n8oOa3y0G9B3k1iYz3k+8i7vT1m3hX5bQH1Xg8T0l1m3bqQk2v9C8mC3yQ6o3r5m1Q1zVtq1zUo8wqgSp3gZ9bqC0G3p2QjS3a4m3bVd2k1i1a0q6q1G7lF0P8AYm3n2Wc3lZfZV2qj1qf4e0v8ANg7n2Vv8AF2dzb4f7Rr2mJZp5k5l6b1T8k0u1l1o1r1U3m5b9W3bJ+V+V8iQKpOqk2Yp0kZ5o7G5yTQk3m1a1q3a1Vg7mF7v7i2i5bJk0o8l5f//Z" />
         <div>
           <h1>Christopher Rager</h1>
           <div class="tagline">Embedded / RF / UAV — projects & notes</div>
@@ -106,8 +168,20 @@
         <a href="#projects">Projects</a>
         <a href="#lab">Lab Notes</a>
         <a href="#writing">Writing</a>
-        <a href="#contact">Contact</a>
-        <a class="btn primary" href="https://github.com/basis-spline" target="_blank" rel="noreferrer">GitHub</a>
+   
+        <!-- Sun/Moon toggle -->
+        <button id="theme" class="icon-btn" aria-label="Toggle theme" aria-pressed="false" title="Toggle theme">
+          <svg id="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+          </svg>
+        </button>
+
+        <!-- GitHub -->
+        <a class="icon-btn" href="https://github.com/basis-spline" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.65 0 8.15c0 3.6 2.29 6.64 5.47 7.72.4.07.55-.18.55-.4 0-.2-.01-.87-.01-1.58-2.01.44-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.52 0-.53.63-.01 1.08.6 1.23.85.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.05 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.32.82 2.22 0 3.15-1.87 3.84-3.65 4.05.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4A8.13 8.13 0 0016 8.15C16 3.65 12.42 0 8 0z"/>
+          </svg>
+        </a>
       </nav>
     </div>
   </header>
@@ -115,13 +189,14 @@
   <main id="main" class="wrap">
     <section class="accent" id="about">
       <h2>About</h2>
-      <div class="sub">Short and to the point</div>
-      <p>I build embedded systems and RF/DSP prototypes. I like clean hardware, traceable software, and results that hold up outside of a demo. This site collects my work and notes in a layout that’s easy to scan.</p>
+      <div class="sub">Welcome</div>
+      <p>This is my personal portfolio site. I focus on electrical engineering, software development, and technical projects.</p>
     </section>
 
     <section id="projects">
       <h2>Projects</h2>
       <div class="sub">Selected builds with links</div>
+      <div id="filters" class="list" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"></div>
       <div class="grid" id="project-grid" aria-live="polite"></div>
     </section>
 
@@ -136,56 +211,59 @@
       <div class="sub">Longer posts and references</div>
       <div class="list" id="post-list" aria-live="polite"></div>
     </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="sub">Best place to reach me</div>
-      <p><a class="underline" href="https://github.com/basis-spline" target="_blank" rel="noreferrer">github.com/basis-spline</a></p>
-    </section>
   </main>
 
   <footer>
     <hr>
-    <div>© <span id="year"></span> Christopher Rager. Built with plain HTML+CSS+JS. Theme: FT paper with eye-saver yellow and deep green.</div>
+    <div>© <span id="year"></span> Christopher Rager. Designed & built with HTML, CSS, and a dash of JS.</div>
   </footer>
 
+  <!-- Scroll to top -->
+  <button id="totop" class="btn" style="position:fixed;right:16px;bottom:16px;display:none" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <script>
+    // Year stamp
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Minimal content model (easy to edit inline)
+    // Content (same structure)
     const PROJECTS = [
       { title: 'UAV Avionics GNC Board', summary: 'IMU + baro + GPS-in, ESC PWM outs. KiCad 9, STM32.', tags:['KiCad','STM32','GNC'], link:'#' },
       { title: 'Signal Telemetry Decoder', summary: 'GNU Radio + Python pipeline for satellite beacons with live labeling.', tags:['GNU Radio','DSP','Python'], link:'#' },
-      { title: 'Chess Engine (Pygame + AI)', summary: 'Alpha-beta, piece-square tables, phase-aware eval.', tags:['Python','AI','Pygame'], link:'#' },
-      { title: 'Rogue Echo Bike Metrics', summary: 'PR tracker and weekly progress export.', tags:['React','TypeScript','Fitness'], link:'#' }
+      { title: 'Weightlifting Stats & Lift Analysis', summary: 'Session parser + est. 1RM/volume per lift, trend lines, export.', tags:['JS','Analytics','Fitness'], link:'#' }
     ];
-
     const LAB = [
       { title: 'Level shifting for 3.3V → 5V ESC signals', date:'2025-08-05', url:'#', blurb:'Quick test of MOSFET + pull-ups; checked rise times on SDS1104X-E.' },
       { title: 'GNURadio QPSK demod cleanup', date:'2025-07-28', url:'#', blurb:'AGC and Costas tweaks; plotted EVM before/after.' },
       { title: 'JST-XH footprint notes for OSH Park', date:'2025-07-19', url:'#', blurb:'Pad length, solder fillet, keepout reminders.' }
     ];
-
     const POSTS = [
       { title: 'Taming Telemetry: Practical DSP Notes', date:'2025-06-02', url:'#' },
       { title: 'StrongLifts → Hypertrophy: a shift', date:'2025-05-11', url:'#' },
       { title: 'Ground Truth: Cheap Sat RX Stations', date:'2025-04-18', url:'#' }
     ];
 
-    function chip(text){ return `<span style="font-size:12px;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:2px 8px;margin-right:6px;background:#fff">${text}</span>` }
-
-    function renderProjects(){
+    // Renderers
+    const chip = (t, cls='') => `<span class="chip ${cls}">${t}</span>`;
+    function renderProjects(list=PROJECTS){
       const grid = document.getElementById('project-grid');
-      grid.innerHTML = PROJECTS.map(p => `
+      grid.innerHTML = list.map(p => `
         <article class="item">
           <h3><a href="${p.link}">${p.title}</a></h3>
-          <div class="meta">${p.tags.map(chip).join('')}</div>
+          <div class="meta">
+            ${(p.tags||[]).map(tag => {
+              const map = {KiCad:'', STM32:'', GNC:'', 'GNU Radio':'', DSP:'', Python:'', JS:'', Analytics:'', Fitness:''};
+              return chip(tag, map[tag]||'');
+            }).join('')}
+          </div>
           <p>${p.summary}</p>
           <p><a class="underline" href="${p.link}">Open →</a></p>
         </article>
       `).join('');
     }
-
     function renderLab(){
       const list = document.getElementById('lab-list');
       list.innerHTML = LAB.map(n => `
@@ -196,7 +274,6 @@
         </article>
       `).join('');
     }
-
     function renderPosts(){
       const list = document.getElementById('post-list');
       list.innerHTML = POSTS.map(p => `
@@ -206,10 +283,7 @@
         </article>
       `).join('');
     }
-
-    renderProjects();
-    renderLab();
-    renderPosts();
+    renderProjects(); renderLab(); renderPosts();
 
     // Mobile menu toggle
     const burger = document.querySelector('.burger');
@@ -219,7 +293,7 @@
       burger.setAttribute('aria-expanded', open);
     });
 
-    // Scrollspy: highlight the current section in nav
+    // Scrollspy
     const links = [...document.querySelectorAll('#topnav a')].filter(a=>a.hash);
     const sections = links.map(a=>document.querySelector(a.hash)).filter(Boolean);
     const obs = new IntersectionObserver((entries)=>{
@@ -230,6 +304,57 @@
       });
     },{rootMargin:'-40% 0px -55% 0px', threshold:0});
     sections.forEach(s=>obs.observe(s));
+
+    // Progress bar + Back-to-top
+    const topBtn=document.getElementById('totop');
+    addEventListener('scroll', ()=>{
+      const y=scrollY, h=document.body.scrollHeight-innerHeight;
+      document.getElementById('bar').style.width=(y/Math.max(h,1)*100)+'%';
+      topBtn.style.display = y>400?'inline-flex':'none';
+    });
+    topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+    // Tag filters
+    const tags=[...new Set(PROJECTS.flatMap(p=>p.tags||[]))];
+    const filters=document.getElementById('filters');
+    filters.innerHTML=['All',...tags].map(t=>`<button class="btn" data-t="${t}">${t}</button>`).join('');
+    filters.onclick=(e)=>{
+      const t=e.target?.dataset?.t; if(!t) return;
+      const subset = t==='All'? PROJECTS : PROJECTS.filter(p=>p.tags&&p.tags.includes(t));
+      renderProjects(subset);
+    };
+
+    // Theme toggle (persist + icon swap + meta color)
+    const key="theme";
+    const root=document.documentElement;
+    const btn=document.getElementById('theme');
+    const ICONS = {
+      sun: `<svg id="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+            </svg>`,
+      moon:`<svg id="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+            </svg>`
+    };
+    function setTheme(t){
+      root.setAttribute('data-theme', t);
+      localStorage.setItem(key, t);
+      btn.innerHTML = t==='dark' ? ICONS.sun : ICONS.moon;
+      btn.setAttribute('aria-pressed', t==='dark');
+
+      const metaLight=document.querySelector('meta[name="theme-color"][media*="light"]');
+      const metaDark=document.querySelector('meta[name="theme-color"][media*="dark"]');
+      if(t==='dark'){ metaDark?.setAttribute('content','#0F1210'); }
+      else { metaLight?.setAttribute('content', getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#FFFACD'); }
+    }
+    const saved=localStorage.getItem(key);
+    if(saved){ setTheme(saved); }
+    else { setTheme( window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+    btn.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+    // Keyboard helper
+    addEventListener('keydown',e=>{ if(e.key==='g') scrollTo({top:0,behavior:'smooth'}); });
   </script>
 </body>
 </html>
